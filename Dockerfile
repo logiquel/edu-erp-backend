@@ -1,12 +1,7 @@
-FROM ubuntu:latest
-LABEL authors="anshumanrana"
-
-ENTRYPOINT ["top", "-b"]
-
 # ─────────────────────────────────────
 # Stage 1: Build
 # ─────────────────────────────────────
-FROM openjdk:25-jdk AS build
+FROM amazoncorretto:25 AS build
 WORKDIR /app
 
 # Copy gradle wrapper and config first (for layer caching)
@@ -27,7 +22,7 @@ RUN ./gradlew clean bootJar -x test
 # ─────────────────────────────────────
 # Stage 2: Run
 # ─────────────────────────────────────
-FROM openjdk:25-jdk
+FROM amazoncorretto:25
 VOLUME /tmp
 
 # Copy the JAR from build stage

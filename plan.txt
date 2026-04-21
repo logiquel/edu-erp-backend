@@ -1,0 +1,467 @@
+
+FOUR STAGES OF ADMISSION
+
+STAGE 1          STAGE 2              STAGE 3           STAGE 4
+─────────        ────────────         ───────────        ──────────────
+Receptionist     School sends         Parents visit      System confirms
+captures         interview date       & fills full  →    admission +
+basic info   →   via SMS/Email   →    form + uploads     generates ID
+                                      docs
+[Quick Form]     [Automated]          [Full Form]        [Auto Action]
+
+
+
+
+Application form is filled online or school visit
+-> Interview scheduled
+   -> Parents visit school
+        -> Gives interview
+            -> Interview already has hard copy of application form
+                -> Passs interview -> Accept(stamps form)
+                    -> Parents give stamped form to reception
+                        -> ERP lookup for application number
+                            -> Should now show full form -> Staff fills full form.
+                            -> Student now admitted
+                                -> pays fees.
+
+
+
+Admission page
+
+Tabs : Applications/Enquiries
+       [List]  | [+New]
+
+List : class wise list of applications
+New : Create new application(basic form). This can also be done from school website by parents. Eventaully entry will show in Application list.
+
+
+List clicked -> Opens basic details. And Status which can be toggled.
+
+
+
+
+
+
+
+
+STD<DOA><DOB><Sr_No.>
+
+
+
+STUD-JASSI-8547
+STUD-JASSI-7856
+
+
+
+https:/easydesk.com/
+
+dav
+
+
+School website Top ->  [Button] -> href={`https:/easydesk.com/dav`}
+
+https:/easydesk/dav/login
+/easydesk/dav/modules
+/easydesk/dav/students
+/easydesk/dav/teachers
+/easydesk/dav/management
+
+
+
+
+
+
+easy.in
+
+
+
+
+/dav/login
+/dav/modules
+/dav/students
+/dav/teachers
+/dav/management
+
+
+https:/dav.in
+
+[Button] href={`/dav/students`}
+
+
+dps.in
+
+
+
+URL:<><host><><>
+
+
+
+
+
+https:/sandhu-food-corner
+ -> menu/landing page
+    item 1 -----
+    item 2 -----
+    item 3 -----
+    item 4 -----
+    item 5 -----
+    item 6 -----
+    item 7 -----
+    item 8 -----
+
+
+https:/paajidatheka
+ -> menu/landing page
+    item 1 -----
+    item 2 -----
+    item 3 -----
+    item 4 -----
+    item 5 -----
+    item 6 -----
+    item 7 -----
+    item 8 -----
+
+
+
+https:/salt&sum.com/sandhu-food-corner-admin
+
+-> Login
+    - Order
+    - Enventory
+    - Billing
+    - Token/Orders List : customer name, phone number, orders
+
+
+
+https:/salt&sum.com/paajidatheka
+
+-> Login
+    - Order
+    - Enventory
+    - Billing
+    - Token/Orders List : customer name, phone number, orders
+
+
+
+
+@170205292540062
+
+
+data class ApiResponse<T>(
+  val success: Boolean,
+  val status: Int,
+  val message: String,
+  val data: T? = null,
+  val error: ApiError? = null,
+)
+
+data class ApiError(
+  val code: String,
+  val details: List<String>,
+)
+
+
+
+
+
+// SUCCESS RESPONSES -------------------------------------------------------
+
+{
+  "success": false,
+  "status": 401,
+  "message": "Unauthorized access",
+  "data":null,
+  "error": {
+    code:'INVALID_PASSWORD',
+    details:['Wrong Password entered','Wrong Password entered','Wrong Password entered','Wrong Password entered']
+  }
+}
+
+
+{
+  "success": true,
+  "status": 200,
+  "message": "Student deleted successfully",
+  "data": null,
+  "error": null
+}
+
+
+// ERROR RESPONSES -------------------------------------------------------
+
+{
+  "success": false,
+  "status": 400,
+  "message": "Validation failed",
+  "data": null,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "details": [
+      "Email must be a valid email address",
+      "Primary mobile must be 10 digits"
+    ]
+  }
+}
+
+
+
+{
+  "success": false,
+  "status": 404,
+  "message": "Student not found",
+  "data": null,
+  "error": {
+    "code": "STUDENT_NOT_FOUND",
+    "details": ["The student you are looking for does not exist."]
+  }
+}
+
+
+Teachers ————————————————————————————————————————————————————————————————————————————————
+
+1. Attendance
+   - Mark Attendance
+   - Leave Applications
+   - View Trend/Analytics
+
+2. Timetable Viewer
+3. Homework / assignments
+4. Student profile View
+5. Monthly Calendar View
+
+
+Students ————————————————————————————————————————————————————————————————————————————————
+
+1. Timetable view
+2. Exams & Schedules
+   - Upcoming Exams
+   - Results & Report Card
+3. Assignments (optional)
+4. Announcements / notices
+5. Fees & Payments
+   - Online Payment
+   - History & Receipts
+6. Attendance
+   - View Attendance summary
+   - Leave Application
+7. Transport
+   - Driver contact
+   - Live tracking (optional)
+8. Profile
+   - Personal details View
+   - Change password
+   - E-ID card download
+
+
+
+
+───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+
+TABLES::
+
+tenants
+─────────────────────────────────────────────
+
+id                  UUID (PK)
+slug                VARCHAR(50) UNIQUE NOT NULL    -- "stmary" → stmary.erp.logiquel.com
+name                VARCHAR(200) NOT NULL          -- "St. Mary's Convent School"
+display_name        VARCHAR(200)                   -- Short name for UI: "St. Mary's"
+logo_url            TEXT
+status              ENUM('onboarding', 'active', 'suspended', 'blocked', 'expired', 'archived')
+type                ENUM('school', 'college', 'coaching', 'university')       -- future-proof
+
+-- Contact
+primary_email       VARCHAR(200) NOT NULL
+primary_phone       VARCHAR(20)
+website             TEXT
+
+-- Location
+address_line1       TEXT
+address_line2       TEXT
+city                VARCHAR(100)
+state               VARCHAR(100)
+pincode             VARCHAR(10)
+country             VARCHAR(100) DEFAULT 'India'
+
+-- School-specific info
+board_type          ENUM('CBSE', 'ICSE', 'IB', 'State', 'Other')
+established_year    INTEGER
+
+
+-- Plan & Billing
+plan_id             UUID FK → plans.id NULL        -- set after plan is created
+billing_cycle       ENUM('monthly', 'quarterly', 'annually')
+activated_at        TIMESTAMP NULL
+next_billing_date   DATE NULL
+last_billed_at      TIMESTAMP NULL
+
+
+
+-- Custom domain
+custom_domain            VARCHAR(200) UNIQUE NULL
+custom_domain_verified   BOOLEAN DEFAULT false
+
+
+-- Meta
+onboarded_by        UUID FK → superadmin_users.id
+created_at          TIMESTAMP DEFAULT now()
+updated_at          TIMESTAMP DEFAULT now()
+
+NOTE:
+plan_id is NULL initially — gets set when plan is created for this tenant in the next step.
+
+
+
+modules
+────────────────────────────────────────────────────────────────────────────────────
+id                  UUID (PK)
+key                 VARCHAR(100) UNIQUE  -- 'attendance', 'fees'
+name                VARCHAR(200)
+description         TEXT
+icon                VARCHAR(100)
+price_per_student   DECIMAL(10,2)        -- ₹5.00 — THE rate
+is_active           BOOLEAN DEFAULT true
+sort_order          INTEGER
+created_at          TIMESTAMP
+updated_at          TIMESTAMP
+
+
+
+plans
+────────────────────────────────────────────────────────────────────────────────────
+id                  UUID (PK)
+tenant_id           UUID FK → tenants.id UNIQUE    -- one plan per tenant
+name                VARCHAR(200)                   -- "St. Mary's Plan"
+created_at          TIMESTAMP DEFAULT now()
+updated_at          TIMESTAMP DEFAULT now()
+updated_at          TIMESTAMP
+
+
+plan_modules
+─────────────────────────────────────────────
+id                  UUID (PK)
+plan_id             UUID FK → plans.id
+module_id           UUID FK → modules.id
+created_at          TIMESTAMP DEFAULT now()
+
+UNIQUE(plan_id, module_id)
+
+
+
+
+invoices
+─────────────────────────────────────────────
+
+id                  UUID (PK)
+tenant_id           UUID FK → tenants.id
+
+-- Billing period
+period_start        DATE
+period_end          DATE
+
+-- Snapshot at billing time
+student_count       INTEGER                        -- live count at billing time
+plan_id             UUID FK → plans.id             -- snapshot of plan at billing time
+
+-- Amounts
+subtotal            DECIMAL(10,2)
+discount_amount     DECIMAL(10,2) DEFAULT 0
+tax_amount          DECIMAL(10,2) DEFAULT 0
+total_amount        DECIMAL(10,2)
+
+-- Status
+status              ENUM('draft', 'sent', 'paid', 'overdue', 'on_hold', 'cancelled')
+due_date            DATE
+paid_at             TIMESTAMP NULL
+
+-- Meta
+created_at          TIMESTAMP DEFAULT now()
+updated_at          TIMESTAMP DEFAULT now()
+
+
+
+
+
+V3 Flow -----------------------------------------------------------------------
+
+Step 1 — Create Modules
+- Create all available modules in the system once
+- Each module has its price_per_student rate
+- These are your master module registry
+
+modules
+  - Attendance      ₹5/student
+  - Fee Management  ₹8/student
+  - Admissions      ₹3/student
+  - Timetable       ₹2/student
+  - Transport       ₹4/student
+
+
+Step 2 — Create Tenant
+- Fill school info, contact, location, billing cycle
+- Tenant is created with status = 'onboarding'
+- No plan yet at this point
+
+Step 3 — Create Plan for This Tenant
+- Go to that tenant → Create Plan
+- Give the plan a name (can be anything, even just "St. Mary's Plan")
+- Select which modules this tenant wants
+- Save → plans row created + plan_modules rows created
+- tenants.plan_id is linked to this plan
+
+
+Step 4 — Activate
+- Review and confirm
+- tenants.status → active
+- activated_at stamped
+- Welcome email fires
+
+
+
+
+
+
+V1 — Fixed Plans with Price at Onboarding
+We started with reusable plans (Basic, Standard, Enterprise) that had a fixed price.
+When onboarding a tenant, you'd pick a plan from the list and manually enter student
+count to calculate the price right there. The problem — price was calculated once at
+onboarding and became stale as student count changed. Plan prices were also hardcoded,
+making them rigid.
+
+
+V2 — Reusable Plans, Price at Billing Time
+We separated pricing from onboarding entirely. Plans remained reusable bundles of modules,
+but price was no longer calculated at onboarding. Instead, billing ran automatically on each
+cycle, fetching the live student count from the actual students table at that moment.
+This eliminated stale pricing. However, reusable plans meant editing a plan accidentally
+affected all tenants on it — a silent breaking change risk.
+
+
+V3 — Fully Custom Plan Per Tenant, Price at Billing Time
+We removed reusable plans completely. Now each tenant gets their own plan created specifically
+for them, with exactly the modules they want — nothing more, nothing less. plans has
+a tenant_id making it strictly 1-to-1. Pricing still happens at billing time from live
+student count. This gives maximum flexibility with zero risk of one tenant's plan change
+affecting another. Onboarding is clean — just create tenant, build their plan, activate.
+
+
+modules ->
+
+M1, M2, M3
+rate -> M1 -> 2rs.
+rate -> M2 -> 4rs.
+rate -> M3 -> 6rs.
+rate -> M4 -> 4rs.
+
+Tenant-> Onboarding
+
+plan -> M1, M2, M3, M7
+        p1  p2  p3  p7
+
+     -> month, quarterly, yearly
+
+D1->start
+| <- month
+D2->end
+
+billing     -> invoice -> price

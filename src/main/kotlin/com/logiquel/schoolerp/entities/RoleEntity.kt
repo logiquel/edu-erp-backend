@@ -17,13 +17,13 @@ class RoleEntity(
     val id: UUID? = null,
 
     @Column(name = "key", nullable = false, unique = true, length = 50)
-    val key: String,                        // 'superadmin', 'admin', 'teacher', 'student'
+    val key: String,
 
     @Column(name = "value", nullable = false, unique = true, length = 50)
-    val value: String,                      // 'SUPERADMIN', 'ADMIN', 'TEACHER', 'STUDENT'
+    val value: String,
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = false, columnDefinition = "role_status")
     val status: RoleStatus = RoleStatus.ACTIVE,
 
     @Column(name = "created_at", nullable = false, updatable = false)

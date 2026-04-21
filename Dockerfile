@@ -31,5 +31,9 @@ VOLUME /tmp
 # Copy the JAR from build stage
 COPY --from=build /app/build/libs/*.jar app.jar
 
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+ENV DB_URL=jdbc:postgresql://db.nvgfnooblleuaaecncnm.supabase.co:5432/postgres
+ENV DB_USERNAME=postgres.nvgfnooblleuaaecncnm
+ENV DB_PASSWORD=your-actual-password
+
+ENTRYPOINT ["java", "-Dserver.port=8080", "-jar", "/app.jar"]
 EXPOSE 8080

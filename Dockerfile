@@ -1,8 +1,11 @@
 # ─────────────────────────────────────
 # Stage 1: Build
 # ─────────────────────────────────────
-FROM amazoncorretto:25 AS build
+FROM amazoncorretto:25-al2023 AS build
 WORKDIR /app
+
+# Install missing tools
+RUN yum install -y findutils
 
 # Copy gradle wrapper and config first (for layer caching)
 COPY gradlew .
@@ -22,7 +25,7 @@ RUN ./gradlew clean bootJar -x test
 # ─────────────────────────────────────
 # Stage 2: Run
 # ─────────────────────────────────────
-FROM amazoncorretto:25
+FROM amazoncorretto:25-al2023
 VOLUME /tmp
 
 # Copy the JAR from build stage

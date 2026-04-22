@@ -25,9 +25,9 @@ FROM amazoncorretto:25-al2023
 COPY --from=build /app/build/libs/*.jar app.jar
 
 ENTRYPOINT ["java", \
-  "-Dspring.datasource.url=jdbc:postgresql://db.nvgfnooblleuaaecncnm.supabase.co:5432/postgres", \
+  "-Dspring.datasource.url=jdbc:postgresql://aws-0-ap-south-1.pooler.supabase.com:6543/postgres", \
   "-Dspring.datasource.username=postgres.nvgfnooblleuaaecncnm", \
-  "-Dspring.datasource.password=your-actual-password", \
+  "-Dspring.datasource.password=L@giquel01g3l", \
   "-Dserver.port=8080", \
   "-jar", "/app.jar"]
 

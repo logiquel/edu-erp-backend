@@ -36,4 +36,4 @@ ENV DB_USERNAME=postgres.nvgfnooblleuaaecncnm
 ENV DB_PASSWORD=L@giquel01g3l
 
 ENTRYPOINT ["java", "-Dserver.port=8080", "-jar", "/app.jar"]
-EXPOSE 8081
+EXPOSE 8080

@@ -1,8 +1,3 @@
-FROM ubuntu:latest
-LABEL authors="anshumanrana"
-
-
-
 # ─────────────────────────────────────
 # Stage 1: Build
 # ─────────────────────────────────────
@@ -32,8 +27,8 @@ COPY --from=build /app/build/libs/*.jar app.jar
 ENTRYPOINT ["java", \
   "-Dspring.datasource.url=jdbc:postgresql://db.nvgfnooblleuaaecncnm.supabase.co:5432/postgres", \
   "-Dspring.datasource.username=postgres.nvgfnooblleuaaecncnm", \
-  "-Dspring.datasource.password=L@giquel01g3l", \
+  "-Dspring.datasource.password=your-actual-password", \
   "-Dserver.port=8080", \
   "-jar", "/app.jar"]
 
-EXPOSE 8080ENTRYPOINT ["top", "-b"]
+EXPOSE 8080

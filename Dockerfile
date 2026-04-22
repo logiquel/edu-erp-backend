@@ -26,7 +26,7 @@ RUN ./gradlew clean bootJar -x test
 # Stage 2: Run
 # ─────────────────────────────────────
 FROM amazoncorretto:25-al2023
-VOLUME /tmp
+#VOLUME /tmp
 
 # Copy the JAR from build stage
 COPY --from=build /app/build/libs/*.jar app.jar

@@ -32,7 +32,7 @@ VOLUME /tmp
 COPY --from=build /app/build/libs/*.jar app.jar
 
 ENV DB_URL=jdbc:postgresql://db.nvgfnooblleuaaecncnm.supabase.co:5432/postgres
-ENV DB_USERNAME=postgres.nvgfnooblleuaaecncnm
+ENV DB_USERNAME=postgres
 ENV DB_PASSWORD=L@giquel01g3l
 
 ENTRYPOINT ["java", "-Dserver.port=8080", "-jar", "/app.jar"]

@@ -25,7 +25,7 @@ data class CreateModuleRequest(
 data class UpdateModuleRequest(
     val name: String? = null,
     val description: String? = null,
-    val role_id: UUID? = null,
+    val roleId: UUID? = null,
     val icon: String? = null,
     val pricePerStudent: BigDecimal? = null,
     val isActive: Boolean? = null,

@@ -11,11 +11,11 @@ data class CreateModuleRequest(
     val key: String,
     val name: String,
     val description: String? = null,
-    val role_id: UUID,
+    val roleId: UUID,
     val icon: String? = null,
-    val price_per_student: BigDecimal = BigDecimal.ZERO,
-    val is_active: Boolean = false,
-    val sort_order: Int = 0
+    val pricePerStudent: BigDecimal = BigDecimal.ZERO,
+    val isActive: Boolean = false,
+    val sortOrder: Int = 0
 )
 
 // ─────────────────────────────────────

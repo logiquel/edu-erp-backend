@@ -30,6 +30,7 @@ dependencies {
 	runtimeOnly("org.postgresql:postgresql")
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-cache")
+	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")

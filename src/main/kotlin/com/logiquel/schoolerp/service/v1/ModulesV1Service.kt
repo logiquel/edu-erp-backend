@@ -9,6 +9,8 @@ import com.logiquel.schoolerp.dto.v1.UpdateModuleRequest
 import com.logiquel.schoolerp.entities.ModuleEntity
 import com.logiquel.schoolerp.repo.ModuleRepository
 import com.logiquel.schoolerp.repo.RoleRepository
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.UUID
@@ -22,8 +24,9 @@ class ModulesV1Service(
     // ─────────────────────────────────────
     // GET ALL
     // ─────────────────────────────────────
+    @Cacheable(cacheNames = ["modules"])
     fun findAll(): ApiResponse<List<ModuleResponse>> {
-        val modules = moduleRepository.findAll().map { it.toResponse() }
+        val modules = moduleRepository.findAllWithRoles().map { it.toResponse() }
         return ApiResponse(
             success = true,
             status  = 200,
@@ -94,6 +97,7 @@ class ModulesV1Service(
     // ─────────────────────────────────────
     // UPDATE
     // ─────────────────────────────────────
+    @CacheEvict(cacheNames = ["modules"],allEntries = true)
     fun update(id: UUID, request: UpdateModuleRequest): ApiResponse<ModuleResponse> {
         val module = moduleRepository.findById(id).orElse(null)
             ?: return ApiResponse(
@@ -140,6 +144,7 @@ class ModulesV1Service(
     // ─────────────────────────────────────
     // DELETE
     // ─────────────────────────────────────
+    @CacheEvict(cacheNames = ["modules"],allEntries = true)
     fun delete(id: UUID): ApiResponse<Nothing> {
         if (!moduleRepository.existsById(id)) {
             return ApiResponse(

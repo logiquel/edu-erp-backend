@@ -23,6 +23,7 @@ import java.util.UUID
 class ModulesV1Controller(private val modulesV1Service: ModulesV1Service) {
 
     // GET /api/v1/modules
+
     @GetMapping
     fun findAll(): ResponseEntity<ApiResponse<List<ModuleResponse>>> {
         return try {

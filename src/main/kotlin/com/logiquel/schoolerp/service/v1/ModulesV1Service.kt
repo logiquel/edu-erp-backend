@@ -25,14 +25,9 @@ class ModulesV1Service(
     // GET ALL
     // ─────────────────────────────────────
     @Cacheable(cacheNames = ["modules"])
-    fun findAll(): ApiResponse<List<ModuleResponse>> {
-        val modules = moduleRepository.findAllWithRoles().map { it.toResponse() }
-        return ApiResponse(
-            success = true,
-            status  = 200,
-            message = "Modules fetched successfully",
-            data    = modules
-        )
+    fun findAll(): List<ModuleResponse> {
+       return  moduleRepository.findAllWithRoles().map { it.toResponse() }
+
     }
 
     // ─────────────────────────────────────

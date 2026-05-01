@@ -27,8 +27,15 @@ class ModulesV1Controller(private val modulesV1Service: ModulesV1Service) {
     @GetMapping
     fun findAll(): ResponseEntity<ApiResponse<List<ModuleResponse>>> {
         return try {
-            val response = modulesV1Service.findAll()
-            ResponseEntity.status(response.status).body(response)
+            val modules = modulesV1Service.findAll()
+            ResponseEntity.ok(
+                ApiResponse(
+                    success = true,
+                    status  = 200,
+                    message = "Modules fetched successfully",
+                    data    = modules
+                )
+            )
         } catch (e: Exception) {
             val error = ApiResponse<List<ModuleResponse>>(
                 success = false,

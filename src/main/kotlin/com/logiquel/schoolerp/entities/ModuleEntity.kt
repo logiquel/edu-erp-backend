@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 @Entity
-@Table(name = "modules")
+@Table(name = "modulesv2")
 class ModuleEntity(
 
     @Id

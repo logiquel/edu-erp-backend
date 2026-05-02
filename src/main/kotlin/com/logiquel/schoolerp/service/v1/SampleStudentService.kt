@@ -68,14 +68,7 @@ class SampleStudentService(
                             errors.add(RowError(rowNum, "Class name is missing"))
                             return@forEach
                         }
-                        repository.existsByEmail(email) -> {
-                            errors.add(RowError(rowNum, "Email already exists: $email"))
-                            return@forEach
-                        }
-                        repository.existsByRollNumber(rollNumber) -> {
-                            errors.add(RowError(rowNum, "Roll number already exists: $rollNumber"))
-                            return@forEach
-                        }
+
                     }
 
                     toSave.add(
@@ -95,7 +88,9 @@ class SampleStudentService(
 
             // save entire chunk at once
             if (toSave.isNotEmpty()) {
+                println("Saving chunk of ${toSave.size} rows...")
                 repository.saveAll(toSave)
+                println("Chunk saved!")
                 successCount += toSave.size
             }
         }

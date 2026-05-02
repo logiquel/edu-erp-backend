@@ -17,7 +17,7 @@ enum class BoardType {
 }
 
 @Entity
-@Table(name = "tenants")
+@Table(name = "tenantsv2")
 class TenantEntity(
 
     @Id

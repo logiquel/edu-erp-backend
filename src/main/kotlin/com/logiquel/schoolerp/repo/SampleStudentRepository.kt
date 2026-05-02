@@ -7,6 +7,5 @@ import java.util.UUID
 
 @Repository
 interface SampleStudentRepository : JpaRepository<SampleStudentEntity, UUID> {
-    fun existsByEmail(email: String): Boolean
-    fun existsByRollNumber(rollNumber: String): Boolean
+
 }

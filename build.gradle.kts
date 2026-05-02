@@ -32,6 +32,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-cache")
 	implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 
+	//Excel
+	implementation("org.apache.poi:poi-ooxml:5.2.5")
+
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

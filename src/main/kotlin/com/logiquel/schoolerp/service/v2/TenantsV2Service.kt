@@ -12,7 +12,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 @Service
-class TenantsV1Service(
+class TenantsV2Service(
     private val tenantRepository: TenantRepository
 ) {
 

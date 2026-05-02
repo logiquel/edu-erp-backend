@@ -16,7 +16,7 @@ import java.time.LocalDateTime
 import java.util.UUID
 
 @Service
-class ModulesV1Service(
+class ModulesV2Service(
     private val moduleRepository: ModuleRepository,
     private val roleRepository: RoleRepository
 ) {

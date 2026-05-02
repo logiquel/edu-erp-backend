@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController
-@RequestMapping("/api/v1/tenants")
-class TenantsV1Controller(private val tenantsV1Service: TenantsV1Service) {
+@RequestMapping("/api/v2/tenants")
+class TenantsV2Controller(private val tenantsV1Service: TenantsV1Service) {
 
     // GET /api/v1/tenants
     @GetMapping

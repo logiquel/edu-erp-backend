@@ -1,8 +1,8 @@
 package com.logiquel.schoolerp.dto.v1
 
-import com.logiquel.schoolerp.entities.BoardType
-import com.logiquel.schoolerp.entities.TenantStatus
-import com.logiquel.schoolerp.entities.TenantType
+import com.logiquel.schoolerp.entities.v1.BoardType
+import com.logiquel.schoolerp.entities.v1.TenantStatus
+import com.logiquel.schoolerp.entities.v1.TenantType
 import java.time.LocalDateTime
 import java.util.UUID
 

@@ -1,4 +1,4 @@
-package com.logiquel.schoolerp.entities
+package com.logiquel.schoolerp.entities.v2
 
 import jakarta.persistence.*
 import java.time.LocalDateTime
@@ -18,7 +18,7 @@ enum class BoardType {
 
 @Entity
 @Table(name = "tenantsv2")
-class TenantEntity(
+class TenantEntityV2(
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

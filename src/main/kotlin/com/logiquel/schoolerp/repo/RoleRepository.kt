@@ -1,7 +1,7 @@
 package com.logiquel.schoolerp.repo
 
-import com.logiquel.schoolerp.entities.RoleEntity
-import com.logiquel.schoolerp.entities.RoleStatus
+import com.logiquel.schoolerp.entities.common.RoleEntity
+import com.logiquel.schoolerp.entities.common.RoleStatus
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.util.UUID

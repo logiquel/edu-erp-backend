@@ -1,7 +1,7 @@
 package com.logiquel.schoolerp.repo
 
-import com.logiquel.schoolerp.entities.TenantEntity
-import com.logiquel.schoolerp.entities.TenantStatus
+import com.logiquel.schoolerp.entities.v1.TenantEntity
+import com.logiquel.schoolerp.entities.v1.TenantStatus
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.util.UUID

@@ -1,6 +1,6 @@
 package com.logiquel.schoolerp.repo
 
-import com.logiquel.schoolerp.entities.SampleStudentEntity
+import com.logiquel.schoolerp.entities.v1.SampleStudentEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 import java.util.UUID

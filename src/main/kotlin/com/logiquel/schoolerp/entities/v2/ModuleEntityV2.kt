@@ -1,5 +1,6 @@
-package com.logiquel.schoolerp.entities
+package com.logiquel.schoolerp.entities.v2
 
+import com.logiquel.schoolerp.entities.common.RoleEntity
 import jakarta.persistence.*
 import java.math.BigDecimal
 import java.time.LocalDateTime
@@ -7,7 +8,7 @@ import java.util.UUID
 
 @Entity
 @Table(name = "modulesv2")
-class ModuleEntity(
+class ModuleEntityV2(
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

@@ -2,7 +2,7 @@ package com.logiquel.schoolerp.service.v1
 
 import com.logiquel.schoolerp.dto.common.ImportReport
 import com.logiquel.schoolerp.dto.common.RowError
-import com.logiquel.schoolerp.entities.SampleStudentEntity
+import com.logiquel.schoolerp.entities.v1.SampleStudentEntity
 import com.logiquel.schoolerp.repo.SampleStudentRepository
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.springframework.scheduling.annotation.Async

@@ -1,0 +1,182 @@
+-- ─────────────────────────────────────────────────────────────
+-- PLANS TABLE
+-- ─────────────────────────────────────────────────────────────
+CREATE TABLE public.plans (
+    id                  UUID            NOT NULL DEFAULT gen_random_uuid(),
+    tenant_id           UUID            NOT NULL,
+    name                VARCHAR(200)    NOT NULL,
+    created_at          TIMESTAMP       NOT NULL DEFAULT now(),
+    updated_at          TIMESTAMP       NOT NULL DEFAULT now(),
+
+    CONSTRAINT plans_pkey
+        PRIMARY KEY (id),
+
+    CONSTRAINT plans_tenant_id_fkey
+        FOREIGN KEY (tenant_id)
+        REFERENCES public.tenants (id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT plans_tenant_id_unique
+        UNIQUE (tenant_id)
+
+) TABLESPACE pg_default;
+
+
+-- ─────────────────────────────────────────────────────────────
+-- PLAN MODULES TABLE
+-- ─────────────────────────────────────────────────────────────
+CREATE TABLE public.plan_modules (
+    id                  UUID            NOT NULL DEFAULT gen_random_uuid(),
+    plan_id             UUID            NOT NULL,
+    module_id           UUID            NOT NULL,
+    price_per_student   NUMERIC(10, 2)  NOT NULL,
+    created_at          TIMESTAMP       NOT NULL DEFAULT now(),
+
+    CONSTRAINT plan_modules_pkey
+        PRIMARY KEY (id),
+
+    CONSTRAINT plan_modules_plan_id_fkey
+        FOREIGN KEY (plan_id)
+        REFERENCES public.plans (id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT plan_modules_module_id_fkey
+        FOREIGN KEY (module_id)
+        REFERENCES public.modules (id)
+        ON DELETE RESTRICT,
+
+    CONSTRAINT plan_modules_plan_id_module_id_unique
+        UNIQUE (plan_id, module_id)
+
+) TABLESPACE pg_default;
+
+
+-- ─────────────────────────────────────────────────────────────
+-- TENANT BILLING TABLE
+-- ─────────────────────────────────────────────────────────────
+CREATE TABLE public.tenant_billing (
+    id                  UUID            NOT NULL DEFAULT gen_random_uuid(),
+    tenant_id           UUID            NOT NULL,
+    plan_id             UUID            NULL,
+    billing_cycle       VARCHAR(20)     NOT NULL,
+    activated_at        TIMESTAMP       NULL,
+    next_billing_date   DATE            NULL,
+    last_billed_at      TIMESTAMP       NULL,
+    created_at          TIMESTAMP       NOT NULL DEFAULT now(),
+    updated_at          TIMESTAMP       NOT NULL DEFAULT now(),
+
+    CONSTRAINT tenant_billing_pkey
+        PRIMARY KEY (id),
+
+    CONSTRAINT tenant_billing_tenant_id_fkey
+        FOREIGN KEY (tenant_id)
+        REFERENCES public.tenants (id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT tenant_billing_plan_id_fkey
+        FOREIGN KEY (plan_id)
+        REFERENCES public.plans (id)
+        ON DELETE SET NULL,
+
+    CONSTRAINT tenant_billing_tenant_id_unique
+        UNIQUE (tenant_id),
+
+    CONSTRAINT tenant_billing_billing_cycle_check
+        CHECK (
+            billing_cycle IN ('monthly', 'quarterly', 'annually')
+        )
+
+) TABLESPACE pg_default;
+
+
+v2-------
+
+-- ─────────────────────────────────────────────────────────────
+-- PLANS V2 TABLE
+-- ─────────────────────────────────────────────────────────────
+CREATE TABLE public.plans_v2 (
+    id                  UUID            NOT NULL DEFAULT gen_random_uuid(),
+    tenant_id           UUID            NOT NULL,
+    name                VARCHAR(200)    NOT NULL,
+    created_at          TIMESTAMP       NOT NULL DEFAULT now(),
+    updated_at          TIMESTAMP       NOT NULL DEFAULT now(),
+
+    CONSTRAINT plans_v2_pkey
+        PRIMARY KEY (id),
+
+    CONSTRAINT plans_v2_tenant_id_fkey
+        FOREIGN KEY (tenant_id)
+        REFERENCES public.tenants (id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT plans_v2_tenant_id_unique
+        UNIQUE (tenant_id)
+
+) TABLESPACE pg_default;
+
+
+-- ─────────────────────────────────────────────────────────────
+-- PLAN MODULES V2 TABLE
+-- ─────────────────────────────────────────────────────────────
+CREATE TABLE public.plan_modules_v2 (
+    id                  UUID            NOT NULL DEFAULT gen_random_uuid(),
+    plan_id             UUID            NOT NULL,
+    module_id           UUID            NOT NULL,
+    price_per_student   NUMERIC(10, 2)  NOT NULL,
+    created_at          TIMESTAMP       NOT NULL DEFAULT now(),
+
+    CONSTRAINT plan_modules_v2_pkey
+        PRIMARY KEY (id),
+
+    CONSTRAINT plan_modules_v2_plan_id_fkey
+        FOREIGN KEY (plan_id)
+        REFERENCES public.plans_v2 (id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT plan_modules_v2_module_id_fkey
+        FOREIGN KEY (module_id)
+        REFERENCES public.modules (id)
+        ON DELETE RESTRICT,
+
+    CONSTRAINT plan_modules_v2_plan_id_module_id_unique
+        UNIQUE (plan_id, module_id)
+
+) TABLESPACE pg_default;
+
+
+-- ─────────────────────────────────────────────────────────────
+-- TENANT BILLING V2 TABLE
+-- ─────────────────────────────────────────────────────────────
+CREATE TABLE public.tenant_billing_v2 (
+    id                  UUID            NOT NULL DEFAULT gen_random_uuid(),
+    tenant_id           UUID            NOT NULL,
+    plan_id             UUID            NULL,
+    billing_cycle       VARCHAR(20)     NOT NULL,
+    activated_at        TIMESTAMP       NULL,
+    next_billing_date   DATE            NULL,
+    last_billed_at      TIMESTAMP       NULL,
+    created_at          TIMESTAMP       NOT NULL DEFAULT now(),
+    updated_at          TIMESTAMP       NOT NULL DEFAULT now(),
+
+    CONSTRAINT tenant_billing_v2_pkey
+        PRIMARY KEY (id),
+
+    CONSTRAINT tenant_billing_v2_tenant_id_fkey
+        FOREIGN KEY (tenant_id)
+        REFERENCES public.tenants (id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT tenant_billing_v2_plan_id_fkey
+        FOREIGN KEY (plan_id)
+        REFERENCES public.plans_v2 (id)
+        ON DELETE SET NULL,
+
+    CONSTRAINT tenant_billing_v2_tenant_id_unique
+        UNIQUE (tenant_id),
+
+    CONSTRAINT tenant_billing_v2_billing_cycle_check
+        CHECK (
+            billing_cycle IN ('monthly', 'quarterly', 'annually')
+        )
+
+) TABLESPACE pg_default;

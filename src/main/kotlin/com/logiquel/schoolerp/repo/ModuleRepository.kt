@@ -1,6 +1,6 @@
 package com.logiquel.schoolerp.repo
 
-import com.logiquel.schoolerp.entities.ModuleEntity
+import com.logiquel.schoolerp.entities.v1.ModuleEntity
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import org.springframework.stereotype.Repository

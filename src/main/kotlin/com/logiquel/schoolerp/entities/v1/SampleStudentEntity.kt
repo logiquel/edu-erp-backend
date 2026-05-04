@@ -1,4 +1,4 @@
-package com.logiquel.schoolerp.entities
+package com.logiquel.schoolerp.entities.v1
 
 import jakarta.persistence.*
 import java.time.LocalDateTime

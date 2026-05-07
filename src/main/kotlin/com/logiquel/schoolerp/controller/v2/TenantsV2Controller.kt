@@ -21,7 +21,7 @@ import java.util.UUID
 @RequestMapping("/api/v2/tenants")
 class TenantsV2Controller(private val tenantsV1Service: TenantsV1Service) {
 
-    // GET /api/v1/tenants
+    // GET /api/v2/tenants
     @GetMapping
     fun findAll(): ResponseEntity<ApiResponse<List<TenantResponse>>> {
         return try {
@@ -42,7 +42,7 @@ class TenantsV2Controller(private val tenantsV1Service: TenantsV1Service) {
         }
     }
 
-    // GET /api/v1/tenants/{id}
+    // GET /api/v2/tenants/{id}
     @GetMapping("/{id}")
     fun findById(@PathVariable id: String): ResponseEntity<ApiResponse<TenantResponse>> {
         val uuid = try {
@@ -79,7 +79,7 @@ class TenantsV2Controller(private val tenantsV1Service: TenantsV1Service) {
         }
     }
 
-    // GET /api/v1/tenants/slug/{slug}
+    // GET /api/v2/tenants/slug/{slug}
     @GetMapping("/slug/{slug}")
     fun findBySlug(@PathVariable slug: String): ResponseEntity<ApiResponse<TenantResponse>> {
         // edge case — blank slug
@@ -130,7 +130,7 @@ class TenantsV2Controller(private val tenantsV1Service: TenantsV1Service) {
         }
     }
 
-    // POST /api/v1/tenants
+    // POST /api/v2/tenants
     @PostMapping
     fun create(@RequestBody(required = false) request: CreateTenantRequest?): ResponseEntity<ApiResponse<TenantResponse>> {
         // edge case — missing request body
@@ -204,7 +204,7 @@ class TenantsV2Controller(private val tenantsV1Service: TenantsV1Service) {
         }
     }
 
-    // PUT /api/v1/tenants/{id}
+    // PUT /api/v2/tenants/{id}
     @PutMapping("/{id}")
     fun update(
         @PathVariable id: String,
@@ -326,7 +326,7 @@ class TenantsV2Controller(private val tenantsV1Service: TenantsV1Service) {
         }
     }
 
-    // DELETE /api/v1/tenants/{id}
+    // DELETE /api/v2/tenants/{id}
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: String): ResponseEntity<ApiResponse<Nothing>> {
         // edge case — invalid UUID format

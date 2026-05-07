@@ -3,11 +3,11 @@ package com.logiquel.schoolerp.service.v2
 
 import com.logiquel.schoolerp.dto.common.ApiError
 import com.logiquel.schoolerp.dto.common.ApiResponse
-import com.logiquel.schoolerp.dto.v1.CreateModuleRequest
-import com.logiquel.schoolerp.dto.v1.ModuleResponse
-import com.logiquel.schoolerp.dto.v1.UpdateModuleRequest
-import com.logiquel.schoolerp.entities.v1.ModuleEntity
-import com.logiquel.schoolerp.repo.ModuleRepository
+import com.logiquel.schoolerp.dto.v2.CreateModuleRequest
+import com.logiquel.schoolerp.dto.v2.ModuleResponse
+import com.logiquel.schoolerp.dto.v2.UpdateModuleRequest
+import com.logiquel.schoolerp.entities.v2.ModuleEntityV2
+import com.logiquel.schoolerp.repo.v2.ModuleRepositoryV2
 import com.logiquel.schoolerp.repo.RoleRepository
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable
@@ -17,7 +17,7 @@ import java.util.UUID
 
 @Service
 class ModulesV2Service(
-    private val moduleRepository: ModuleRepository,
+    private val moduleRepositoryV2: ModuleRepositoryV2,
     private val roleRepository: RoleRepository
 ) {
 
@@ -26,7 +26,7 @@ class ModulesV2Service(
     // ─────────────────────────────────────
     @Cacheable(cacheNames = ["modules"])
     fun findAll(): List<ModuleResponse> {
-       return  moduleRepository.findAllWithRoles().map { it.toResponse() }
+       return  moduleRepositoryV2.findAllWithRoles().map { it.toResponse() }
 
     }
 
@@ -34,7 +34,7 @@ class ModulesV2Service(
     // GET BY ID
     // ─────────────────────────────────────
     fun findById(id: UUID): ApiResponse<ModuleResponse> {
-        val module = moduleRepository.findById(id).orElse(null)
+        val module = moduleRepositoryV2.findById(id).orElse(null)
             ?: return ApiResponse(
                 success = false,
                 status  = 404,
@@ -68,7 +68,7 @@ class ModulesV2Service(
                 )
             )
 
-        val module = ModuleEntity(
+        val module = ModuleEntityV2(
             key             = request.key,
             name            = request.name,
             description     = request.description,
@@ -79,7 +79,7 @@ class ModulesV2Service(
             sortOrder       = request.sortOrder
         )
 
-        val saved = moduleRepository.save(module)
+        val saved = moduleRepositoryV2.save(module)
 
         return ApiResponse(
             success = true,
@@ -94,7 +94,7 @@ class ModulesV2Service(
     // ─────────────────────────────────────
     @CacheEvict(cacheNames = ["modules"],allEntries = true)
     fun update(id: UUID, request: UpdateModuleRequest): ApiResponse<ModuleResponse> {
-        val module = moduleRepository.findById(id).orElse(null)
+        val module = moduleRepositoryV2.findById(id).orElse(null)
             ?: return ApiResponse(
                 success = false,
                 status  = 404,
@@ -126,7 +126,7 @@ class ModulesV2Service(
         }
 
         module.updatedAt = LocalDateTime.now()
-        val updated = moduleRepository.save(module)
+        val updated = moduleRepositoryV2.save(module)
 
         return ApiResponse(
             success = true,
@@ -141,7 +141,7 @@ class ModulesV2Service(
     // ─────────────────────────────────────
     @CacheEvict(cacheNames = ["modules"],allEntries = true)
     fun delete(id: UUID): ApiResponse<Nothing> {
-        if (!moduleRepository.existsById(id)) {
+        if (!moduleRepositoryV2.existsById(id)) {
             return ApiResponse(
                 success = false,
                 status  = 404,
@@ -153,7 +153,7 @@ class ModulesV2Service(
             )
         }
 
-        moduleRepository.deleteById(id)
+        moduleRepositoryV2.deleteById(id)
 
         return ApiResponse(
             success = true,
@@ -165,7 +165,7 @@ class ModulesV2Service(
     // ─────────────────────────────────────
     // Mapper — Entity to Response
     // ─────────────────────────────────────
-    private fun ModuleEntity.toResponse() = ModuleResponse(
+    private fun ModuleEntityV2.toResponse() = ModuleResponse(
         id              = id!!,
         key             = key,
         name            = name,

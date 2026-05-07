@@ -7,7 +7,7 @@ import com.logiquel.schoolerp.dto.v1.CreateModuleRequest
 import com.logiquel.schoolerp.dto.v1.ModuleResponse
 import com.logiquel.schoolerp.dto.v1.UpdateModuleRequest
 import com.logiquel.schoolerp.entities.v1.ModuleEntity
-import com.logiquel.schoolerp.repo.ModuleRepository
+import com.logiquel.schoolerp.repo.v1.ModuleRepository
 import com.logiquel.schoolerp.repo.RoleRepository
 import org.springframework.cache.annotation.CacheEvict
 import org.springframework.cache.annotation.Cacheable

@@ -6,17 +6,17 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 import java.util.UUID
 
-data class PlanResponse(
+data class PlanResponseV2(
     val id: UUID,
     val tenantId: UUID,
     val tenantName: String,
     val name: String,
-    val modules: List<PlanModuleResponse>,
+    val modules: List<PlanModuleResponseV2>,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime
 )
 
-data class PlanModuleResponse(
+data class PlanModuleResponseV2(
     val id: UUID,
     val moduleId: UUID,
     val moduleKey: String,
@@ -25,7 +25,7 @@ data class PlanModuleResponse(
     val createdAt: LocalDateTime
 )
 
-data class TenantBillingResponse(
+data class TenantBillingResponseV2(
     val id: UUID,
     val tenantId: UUID,
     val tenantName: String,

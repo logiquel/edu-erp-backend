@@ -7,7 +7,7 @@ import java.util.UUID
 // ─────────────────────────────────────
 // CREATE REQUEST
 // ─────────────────────────────────────
-data class CreateModuleRequest(
+data class CreateModuleRequestV2(
     val key: String,
     val name: String,
     val description: String? = null,
@@ -22,7 +22,7 @@ data class CreateModuleRequest(
 // UPDATE REQUEST
 // all fields optional — only send what you want to change
 // ─────────────────────────────────────
-data class UpdateModuleRequest(
+data class UpdateModuleRequestV2(
     val name: String? = null,
     val description: String? = null,
     val roleId: UUID? = null,
@@ -35,7 +35,7 @@ data class UpdateModuleRequest(
 // ─────────────────────────────────────
 // RESPONSE
 // ─────────────────────────────────────
-data class ModuleResponse(
+data class ModuleResponseV2(
     val id: UUID,
     val key: String,
     val name: String,

@@ -1,15 +1,15 @@
 package com.logiquel.schoolerp.dto.v2
 
-import com.logiquel.schoolerp.entities.v1.BoardType
-import com.logiquel.schoolerp.entities.v1.TenantStatus
-import com.logiquel.schoolerp.entities.v1.TenantType
+import com.logiquel.schoolerp.entities.v2.BoardType
+import com.logiquel.schoolerp.entities.v2.TenantStatus
+import com.logiquel.schoolerp.entities.v2.TenantType
 import java.time.LocalDateTime
 import java.util.UUID
 
 // ─────────────────────────────────────
 // CREATE REQUEST
 // ─────────────────────────────────────
-data class CreateTenantRequest(
+data class CreateTenantRequestV2(
     val slug: String,
     val name: String,
     val displayName: String? = null,
@@ -39,7 +39,7 @@ data class CreateTenantRequest(
 // UPDATE REQUEST
 // all fields optional
 // ─────────────────────────────────────
-data class UpdateTenantRequest(
+data class UpdateTenantRequestV2(
     val name: String? = null,
     val displayName: String? = null,
     val logoUrl: String? = null,
@@ -67,7 +67,7 @@ data class UpdateTenantRequest(
 // ─────────────────────────────────────
 // RESPONSE
 // ─────────────────────────────────────
-data class TenantResponse(
+data class TenantResponseV2(
     val id: UUID,
     val slug: String,
     val name: String,

@@ -2,25 +2,25 @@ package com.logiquel.schoolerp.service.v2
 
 import com.logiquel.schoolerp.dto.common.ApiError
 import com.logiquel.schoolerp.dto.common.ApiResponse
-import com.logiquel.schoolerp.dto.v1.CreateTenantRequest
-import com.logiquel.schoolerp.dto.v1.TenantResponse
-import com.logiquel.schoolerp.dto.v1.UpdateTenantRequest
-import com.logiquel.schoolerp.entities.v1.TenantEntity
-import com.logiquel.schoolerp.repo.TenantRepository
+import com.logiquel.schoolerp.dto.v2.CreateTenantRequestV2
+import com.logiquel.schoolerp.dto.v2.TenantResponseV2
+import com.logiquel.schoolerp.dto.v2.UpdateTenantRequestV2
+import com.logiquel.schoolerp.entities.v2.TenantEntityV2
+import com.logiquel.schoolerp.repo.v2.TenantRepositoryV2
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.UUID
 
 @Service
 class TenantsV2Service(
-    private val tenantRepository: TenantRepository
+    private val tenantRepositoryV2: TenantRepositoryV2
 ) {
 
     // ─────────────────────────────────────
     // GET ALL
     // ─────────────────────────────────────
-    fun findAll(): ApiResponse<List<TenantResponse>> {
-        val tenants = tenantRepository.findAll().map { it.toResponse() }
+    fun findAll(): ApiResponse<List<TenantResponseV2>> {
+        val tenants = tenantRepositoryV2.findAll().map { it.toResponse() }
         return ApiResponse(
             success = true,
             status  = 200,
@@ -32,8 +32,8 @@ class TenantsV2Service(
     // ─────────────────────────────────────
     // GET BY ID
     // ─────────────────────────────────────
-    fun findById(id: UUID): ApiResponse<TenantResponse> {
-        val tenant = tenantRepository.findById(id).orElse(null)
+    fun findById(id: UUID): ApiResponse<TenantResponseV2> {
+        val tenant = tenantRepositoryV2.findById(id).orElse(null)
             ?: return ApiResponse(
                 success = false,
                 status  = 404,
@@ -54,8 +54,8 @@ class TenantsV2Service(
     // ─────────────────────────────────────
     // GET BY SLUG
     // ─────────────────────────────────────
-    fun findBySlug(slug: String): ApiResponse<TenantResponse> {
-        val tenant = tenantRepository.findBySlug(slug)
+    fun findBySlug(slug: String): ApiResponse<TenantResponseV2> {
+        val tenant = tenantRepositoryV2.findBySlug(slug)
             ?: return ApiResponse(
                 success = false,
                 status  = 404,
@@ -76,9 +76,9 @@ class TenantsV2Service(
     // ─────────────────────────────────────
     // CREATE
     // ─────────────────────────────────────
-    fun create(request: CreateTenantRequest): ApiResponse<TenantResponse> {
+    fun create(request: CreateTenantRequestV2): ApiResponse<TenantResponseV2> {
         // check slug uniqueness
-        if (tenantRepository.existsBySlug(request.slug)) {
+        if (tenantRepositoryV2.existsBySlug(request.slug)) {
             return ApiResponse(
                 success = false,
                 status  = 409,
@@ -91,7 +91,7 @@ class TenantsV2Service(
         }
 
         // check email uniqueness
-        if (tenantRepository.existsByPrimaryEmail(request.primaryEmail)) {
+        if (tenantRepositoryV2.existsByPrimaryEmail(request.primaryEmail)) {
             return ApiResponse(
                 success = false,
                 status  = 409,
@@ -103,7 +103,7 @@ class TenantsV2Service(
             )
         }
 
-        val tenant = TenantEntity(
+        val tenant = TenantEntityV2(
             slug            = request.slug,
             name            = request.name,
             displayName     = request.displayName,
@@ -123,7 +123,7 @@ class TenantsV2Service(
             establishedYear = request.establishedYear
         )
 
-        val saved = tenantRepository.save(tenant)
+        val saved = tenantRepositoryV2.save(tenant)
         return ApiResponse(
             success = true,
             status  = 200,
@@ -135,8 +135,8 @@ class TenantsV2Service(
     // ─────────────────────────────────────
     // UPDATE
     // ─────────────────────────────────────
-    fun update(id: UUID, request: UpdateTenantRequest): ApiResponse<TenantResponse> {
-        val tenant = tenantRepository.findById(id).orElse(null)
+    fun update(id: UUID, request: UpdateTenantRequestV2): ApiResponse<TenantResponseV2> {
+        val tenant = tenantRepositoryV2.findById(id).orElse(null)
             ?: return ApiResponse(
                 success = false,
                 status  = 404,
@@ -166,7 +166,7 @@ class TenantsV2Service(
 
         tenant.updatedAt = LocalDateTime.now()
 
-        val updated = tenantRepository.save(tenant)
+        val updated = tenantRepositoryV2.save(tenant)
         return ApiResponse(
             success = true,
             status  = 200,
@@ -179,7 +179,7 @@ class TenantsV2Service(
     // DELETE
     // ─────────────────────────────────────
     fun delete(id: UUID): ApiResponse<Nothing> {
-        if (!tenantRepository.existsById(id)) {
+        if (!tenantRepositoryV2.existsById(id)) {
             return ApiResponse(
                 success = false,
                 status  = 404,
@@ -190,7 +190,7 @@ class TenantsV2Service(
                 )
             )
         }
-        tenantRepository.deleteById(id)
+        tenantRepositoryV2.deleteById(id)
         return ApiResponse(
             success = true,
             status  = 200,
@@ -201,7 +201,7 @@ class TenantsV2Service(
     // ─────────────────────────────────────
     // Mapper — Entity to Response
     // ─────────────────────────────────────
-    private fun TenantEntity.toResponse() = TenantResponse(
+    private fun TenantEntityV2.toResponse() = TenantResponseV2(
         id              = id!!,
         slug            = slug,
         name            = name,

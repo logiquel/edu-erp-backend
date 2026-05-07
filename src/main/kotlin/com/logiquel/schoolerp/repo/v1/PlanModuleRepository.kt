@@ -1,4 +1,4 @@
-package com.logiquel.schoolerp.repo
+package com.logiquel.schoolerp.repo.v1
 
 import com.logiquel.schoolerp.entities.v1.PlanModuleEntity
 import org.springframework.data.jpa.repository.JpaRepository

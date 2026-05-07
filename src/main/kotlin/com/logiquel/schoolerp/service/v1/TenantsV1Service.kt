@@ -6,7 +6,7 @@ import com.logiquel.schoolerp.dto.v1.CreateTenantRequest
 import com.logiquel.schoolerp.dto.v1.TenantResponse
 import com.logiquel.schoolerp.dto.v1.UpdateTenantRequest
 import com.logiquel.schoolerp.entities.v1.TenantEntity
-import com.logiquel.schoolerp.repo.TenantRepository
+import com.logiquel.schoolerp.repo.v1.TenantRepository
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.UUID

@@ -2,10 +2,11 @@ package com.logiquel.schoolerp.controller.v2
 
 import com.logiquel.schoolerp.dto.common.ApiError
 import com.logiquel.schoolerp.dto.common.ApiResponse
-import com.logiquel.schoolerp.dto.v1.CreateModuleRequest
-import com.logiquel.schoolerp.dto.v1.ModuleResponse
-import com.logiquel.schoolerp.dto.v1.UpdateModuleRequest
-import com.logiquel.schoolerp.service.v1.ModulesV1Service
+import com.logiquel.schoolerp.dto.v2.CreateModuleRequest
+import com.logiquel.schoolerp.dto.v2.ModuleResponse
+import com.logiquel.schoolerp.dto.v2.UpdateModuleRequest
+import com.logiquel.schoolerp.service.v2.ModulesV2Service
+
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,14 +20,14 @@ import java.util.UUID
 
 @RestController
 @RequestMapping("/api/v2/modules")
-class ModulesV2Controller(private val modulesV1Service: ModulesV1Service) {
+class ModulesV2Controller(private val modulesV2Service: ModulesV2Service) {
 
-    // GET /api/v1/modules
+    // GET /api/v2/modules
 
     @GetMapping
     fun findAll(): ResponseEntity<ApiResponse<List<ModuleResponse>>> {
         return try {
-            val modules = modulesV1Service.findAll()
+            val modules = modulesV2Service.findAll()
             ResponseEntity.ok(
                 ApiResponse(
                     success = true,
@@ -49,7 +50,7 @@ class ModulesV2Controller(private val modulesV1Service: ModulesV1Service) {
         }
     }
 
-    // GET /api/v1/modules/{id}
+    // GET /api/v2/modules/{id}
     @GetMapping("/{id}")
     fun findById(@PathVariable id: String): ResponseEntity<ApiResponse<ModuleResponse>> {
         // edge case — invalid UUID format
@@ -70,7 +71,7 @@ class ModulesV2Controller(private val modulesV1Service: ModulesV1Service) {
         }
 
         return try {
-            val response = modulesV1Service.findById(uuid)
+            val response = modulesV2Service.findById(uuid)
             ResponseEntity.status(response.status).body(response)
         } catch (e: Exception) {
             ResponseEntity.status(500).body(
@@ -87,7 +88,7 @@ class ModulesV2Controller(private val modulesV1Service: ModulesV1Service) {
         }
     }
 
-    // POST /api/v1/modules
+    // POST /api/v2/modules
     @PostMapping
     fun create(@RequestBody(required = false) request: CreateModuleRequest?): ResponseEntity<ApiResponse<ModuleResponse>> {
         // edge case — empty request body
@@ -125,7 +126,7 @@ class ModulesV2Controller(private val modulesV1Service: ModulesV1Service) {
         }
 
         return try {
-            val response = modulesV1Service.create(request)
+            val response = modulesV2Service.create(request)
             ResponseEntity.status(response.status).body(response)
         } catch (e: Exception) {
             ResponseEntity.status(500).body(
@@ -142,7 +143,7 @@ class ModulesV2Controller(private val modulesV1Service: ModulesV1Service) {
         }
     }
 
-    // PUT /api/v1/modules/{id}
+    // PUT /api/v2/modules/{id}
     @PutMapping("/{id}")
     fun update(
         @PathVariable id: String,
@@ -218,7 +219,7 @@ class ModulesV2Controller(private val modulesV1Service: ModulesV1Service) {
         }
 
         return try {
-            val response = modulesV1Service.update(uuid, request)
+            val response = modulesV2Service.update(uuid, request)
             ResponseEntity.status(response.status).body(response)
         } catch (e: Exception) {
             ResponseEntity.status(500).body(
@@ -235,7 +236,7 @@ class ModulesV2Controller(private val modulesV1Service: ModulesV1Service) {
         }
     }
 
-    // DELETE /api/v1/modules/{id}
+    // DELETE /api/v2/modules/{id}
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id: String): ResponseEntity<ApiResponse<Nothing>> {
         // edge case — invalid UUID format
@@ -256,7 +257,7 @@ class ModulesV2Controller(private val modulesV1Service: ModulesV1Service) {
         }
 
         return try {
-            val response = modulesV1Service.delete(uuid)
+            val response = modulesV2Service.delete(uuid)
             ResponseEntity.status(response.status).body(response)
         } catch (e: Exception) {
             ResponseEntity.status(500).body(

@@ -4,12 +4,12 @@ import com.logiquel.schoolerp.dto.common.ApiError
 import com.logiquel.schoolerp.dto.common.ApiResponse
 import com.logiquel.schoolerp.dto.v2.PlanModuleResponse
 import com.logiquel.schoolerp.dto.v2.PlanResponse
-import com.logiquel.schoolerp.entities.v1.PlanEntity
-import com.logiquel.schoolerp.entities.v1.PlanModuleEntity
-import com.logiquel.schoolerp.repo.ModuleRepository
-import com.logiquel.schoolerp.repo.PlanModuleRepository
-import com.logiquel.schoolerp.repo.PlanRepository
-import com.logiquel.schoolerp.repo.TenantRepository
+import com.logiquel.schoolerp.entities.v2.PlanEntityV2
+import com.logiquel.schoolerp.entities.v2.PlanModuleEntityV2
+import com.logiquel.schoolerp.repo.v2.ModuleRepositoryV2
+import com.logiquel.schoolerp.repo.v2.PlanModuleRepositoryV2
+import com.logiquel.schoolerp.repo.v2.PlanRepositoryV2
+import com.logiquel.schoolerp.repo.v2.TenantRepositoryV2
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
@@ -33,17 +33,17 @@ data class AddModuleToPlanRequest(
 
 @Service
 class PlansV2Service(
-    private val planRepository: PlanRepository,
-    private val planModuleRepository: PlanModuleRepository,
-    private val tenantRepository: TenantRepository,
-    private val moduleRepository: ModuleRepository
+    private val planRepositoryV2: PlanRepositoryV2,
+    private val planModuleRepositoryV2: PlanModuleRepositoryV2,
+    private val tenantRepositoryV2: TenantRepositoryV2,
+    private val moduleRepositoryV2: ModuleRepositoryV2
 ) {
 
     // ─────────────────────────────────────
     // GET ALL
     // ─────────────────────────────────────
     fun findAll(): ApiResponse<List<PlanResponse>> {
-        val plans = planRepository.findAll().map { it.toResponse() }
+        val plans = planRepositoryV2.findAll().map { it.toResponse() }
         return ApiResponse(
             success = true,
             status = 200,
@@ -56,7 +56,7 @@ class PlansV2Service(
     // GET BY ID
     // ─────────────────────────────────────
     fun findById(id: UUID): ApiResponse<PlanResponse> {
-        val plan = planRepository.findByIdWithTenant(id).orElse(null)
+        val plan = planRepositoryV2.findByIdWithTenant(id).orElse(null)
             ?: return ApiResponse(
                 success = false,
                 status = 404,
@@ -78,7 +78,7 @@ class PlansV2Service(
     // GET BY TENANT ID
     // ─────────────────────────────────────
     fun findByTenantId(tenantId: UUID): ApiResponse<PlanResponse> {
-        val plan = planRepository.findByTenantId(tenantId).orElse(null)
+        val plan = planRepositoryV2.findByTenantId(tenantId).orElse(null)
             ?: return ApiResponse(
                 success = false,
                 status = 404,
@@ -101,7 +101,7 @@ class PlansV2Service(
     // ─────────────────────────────────────
     @Transactional
     fun create(request: CreatePlanRequest): ApiResponse<PlanResponse> {
-        val tenant = tenantRepository.findById(request.tenantId).orElse(null)
+        val tenant = tenantRepositoryV2.findById(request.tenantId).orElse(null)
             ?: return ApiResponse(
                 success = false,
                 status = 404,
@@ -112,7 +112,7 @@ class PlansV2Service(
                 )
             )
 
-        if (planRepository.existsByTenantId(request.tenantId)) {
+        if (planRepositoryV2.existsByTenantId(request.tenantId)) {
             return ApiResponse(
                 success = false,
                 status = 409,
@@ -124,23 +124,23 @@ class PlansV2Service(
             )
         }
 
-        val plan = PlanEntity(
+        val plan = PlanEntityV2(
             tenant = tenant,
             name = request.name
         )
-        val saved = planRepository.save(plan)
+        val saved = planRepositoryV2.save(plan)
 
         // add modules to plan if provided
         if (request.moduleIds.isNotEmpty()) {
             request.moduleIds.forEach { moduleId ->
-                val module = moduleRepository.findById(moduleId).orElse(null)
+                val module = moduleRepositoryV2.findById(moduleId).orElse(null)
                 if (module != null) {
-                    val planModule = PlanModuleEntity(
+                    val planModule = PlanModuleEntityV2(
                         plan = saved,
                         module = module,
                         pricePerStudent = module.pricePerStudent
                     )
-                    planModuleRepository.save(planModule)
+                    planModuleRepositoryV2.save(planModule)
                 }
             }
         }
@@ -158,7 +158,7 @@ class PlansV2Service(
     // ─────────────────────────────────────
     @Transactional
     fun update(id: UUID, request: UpdatePlanRequest): ApiResponse<PlanResponse> {
-        val plan = planRepository.findById(id).orElse(null)
+        val plan = planRepositoryV2.findById(id).orElse(null)
             ?: return ApiResponse(
                 success = false,
                 status = 404,
@@ -171,7 +171,7 @@ class PlansV2Service(
 
         request.name?.let { plan.name = it }
         plan.updatedAt = LocalDateTime.now()
-        val updated = planRepository.save(plan)
+        val updated = planRepositoryV2.save(plan)
 
         return ApiResponse(
             success = true,
@@ -186,7 +186,7 @@ class PlansV2Service(
     // ─────────────────────────────────────
     @Transactional
     fun delete(id: UUID): ApiResponse<Nothing> {
-        if (!planRepository.existsById(id)) {
+        if (!planRepositoryV2.existsById(id)) {
             return ApiResponse(
                 success = false,
                 status = 404,
@@ -197,7 +197,7 @@ class PlansV2Service(
                 )
             )
         }
-        planRepository.deleteById(id)
+        planRepositoryV2.deleteById(id)
         return ApiResponse(
             success = true,
             status = 200,
@@ -210,7 +210,7 @@ class PlansV2Service(
     // ─────────────────────────────────────
     @Transactional
     fun addModule(planId: UUID, request: AddModuleToPlanRequest): ApiResponse<PlanResponse> {
-        val plan = planRepository.findById(planId).orElse(null)
+        val plan = planRepositoryV2.findById(planId).orElse(null)
             ?: return ApiResponse(
                 success = false,
                 status = 404,
@@ -221,7 +221,7 @@ class PlansV2Service(
                 )
             )
 
-        val module = moduleRepository.findById(request.moduleId).orElse(null)
+        val module = moduleRepositoryV2.findById(request.moduleId).orElse(null)
             ?: return ApiResponse(
                 success = false,
                 status = 404,
@@ -232,7 +232,7 @@ class PlansV2Service(
                 )
             )
 
-        if (planModuleRepository.existsByPlanIdAndModuleId(planId, request.moduleId)) {
+        if (planModuleRepositoryV2.existsByPlanIdAndModuleId(planId, request.moduleId)) {
             return ApiResponse(
                 success = false,
                 status = 409,
@@ -244,14 +244,14 @@ class PlansV2Service(
             )
         }
 
-        val planModule = PlanModuleEntity(
+        val planModule = PlanModuleEntityV2(
             plan = plan,
             module = module,
             pricePerStudent = request.pricePerStudent
         )
-        planModuleRepository.save(planModule)
+        planModuleRepositoryV2.save(planModule)
         plan.updatedAt = LocalDateTime.now()
-        planRepository.save(plan)
+        planRepositoryV2.save(plan)
 
         return ApiResponse(
             success = true,
@@ -266,7 +266,7 @@ class PlansV2Service(
     // ─────────────────────────────────────
     @Transactional
     fun removeModule(planId: UUID, moduleId: UUID): ApiResponse<PlanResponse> {
-        if (!planRepository.existsById(planId)) {
+        if (!planRepositoryV2.existsById(planId)) {
             return ApiResponse(
                 success = false,
                 status = 404,
@@ -278,7 +278,7 @@ class PlansV2Service(
             )
         }
 
-        if (!planModuleRepository.existsByPlanIdAndModuleId(planId, moduleId)) {
+        if (!planModuleRepositoryV2.existsByPlanIdAndModuleId(planId, moduleId)) {
             return ApiResponse(
                 success = false,
                 status = 404,
@@ -290,11 +290,11 @@ class PlansV2Service(
             )
         }
 
-        planModuleRepository.deleteByPlanIdAndModuleId(planId, moduleId)
+        planModuleRepositoryV2.deleteByPlanIdAndModuleId(planId, moduleId)
 
-        val plan = planRepository.findById(planId).get()
+        val plan = planRepositoryV2.findById(planId).get()
         plan.updatedAt = LocalDateTime.now()
-        planRepository.save(plan)
+        planRepositoryV2.save(plan)
 
         return ApiResponse(
             success = true,
@@ -307,8 +307,8 @@ class PlansV2Service(
     // ─────────────────────────────────────
     // Mapper
     // ─────────────────────────────────────
-    private fun PlanEntity.toResponse(): PlanResponse {
-        val modules = planModuleRepository.findAllByPlanIdWithModule(id!!)
+    private fun PlanEntityV2.toResponse(): PlanResponse {
+        val modules = planModuleRepositoryV2.findAllByPlanIdWithModule(id!!)
         return PlanResponse(
             id = id!!,
             tenantId = tenant.id!!,
@@ -320,7 +320,7 @@ class PlansV2Service(
         )
     }
 
-    private fun PlanModuleEntity.toModuleResponse() = PlanModuleResponse(
+    private fun PlanModuleEntityV2.toModuleResponse() = PlanModuleResponse(
         id = id!!,
         moduleId = module.id!!,
         moduleKey = module.key,

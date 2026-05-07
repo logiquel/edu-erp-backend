@@ -2,7 +2,7 @@ package com.logiquel.schoolerp.controller.v2
 
 import com.logiquel.schoolerp.dto.common.ApiError
 import com.logiquel.schoolerp.dto.common.ApiResponse
-import com.logiquel.schoolerp.dto.v2.TenantBillingResponse
+import com.logiquel.schoolerp.dto.v2.TenantBillingResponseV2
 import com.logiquel.schoolerp.service.v2.CreateTenantBillingRequest
 import com.logiquel.schoolerp.service.v2.TenantBillingV2Service
 import com.logiquel.schoolerp.service.v2.UpdateTenantBillingRequest
@@ -24,7 +24,7 @@ class TenantBillingV2Controller(
 
     // GET /api/v2/billing
     @GetMapping
-    fun findAll(): ResponseEntity<ApiResponse<List<TenantBillingResponse>>> {
+    fun findAll(): ResponseEntity<ApiResponse<List<TenantBillingResponseV2>>> {
         return try {
             val response = tenantBillingV2Service.findAll()
             ResponseEntity.status(response.status).body(response)
@@ -45,7 +45,7 @@ class TenantBillingV2Controller(
 
     // GET /api/v2/billing/{id}
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: String): ResponseEntity<ApiResponse<TenantBillingResponse>> {
+    fun findById(@PathVariable id: String): ResponseEntity<ApiResponse<TenantBillingResponseV2>> {
         val uuid = try {
             UUID.fromString(id)
         } catch (e: IllegalArgumentException) {
@@ -84,7 +84,7 @@ class TenantBillingV2Controller(
     @GetMapping("/tenant/{tenantId}")
     fun findByTenantId(
         @PathVariable tenantId: String
-    ): ResponseEntity<ApiResponse<TenantBillingResponse>> {
+    ): ResponseEntity<ApiResponse<TenantBillingResponseV2>> {
         val uuid = try {
             UUID.fromString(tenantId)
         } catch (e: IllegalArgumentException) {
@@ -123,7 +123,7 @@ class TenantBillingV2Controller(
     @PostMapping
     fun create(
         @RequestBody(required = false) request: CreateTenantBillingRequest?
-    ): ResponseEntity<ApiResponse<TenantBillingResponse>> {
+    ): ResponseEntity<ApiResponse<TenantBillingResponseV2>> {
         if (request == null) {
             return ResponseEntity.status(400).body(
                 ApiResponse(
@@ -185,7 +185,7 @@ class TenantBillingV2Controller(
     fun update(
         @PathVariable id: String,
         @RequestBody(required = false) request: UpdateTenantBillingRequest?
-    ): ResponseEntity<ApiResponse<TenantBillingResponse>> {
+    ): ResponseEntity<ApiResponse<TenantBillingResponseV2>> {
         val uuid = try {
             UUID.fromString(id)
         } catch (e: IllegalArgumentException) {

@@ -2,7 +2,7 @@ package com.logiquel.schoolerp.controller.v2
 
 import com.logiquel.schoolerp.dto.common.ApiError
 import com.logiquel.schoolerp.dto.common.ApiResponse
-import com.logiquel.schoolerp.dto.v2.PlanResponse
+import com.logiquel.schoolerp.dto.v2.PlanResponseV2
 import com.logiquel.schoolerp.service.v2.AddModuleToPlanRequest
 import com.logiquel.schoolerp.service.v2.CreatePlanRequest
 import com.logiquel.schoolerp.service.v2.PlansV2Service
@@ -24,7 +24,7 @@ class PlansV2Controller(private val plansV2Service: PlansV2Service) {
 
     // GET /api/v2/plans
     @GetMapping
-    fun findAll(): ResponseEntity<ApiResponse<List<PlanResponse>>> {
+    fun findAll(): ResponseEntity<ApiResponse<List<PlanResponseV2>>> {
         return try {
             val response = plansV2Service.findAll()
             ResponseEntity.status(response.status).body(response)
@@ -45,7 +45,7 @@ class PlansV2Controller(private val plansV2Service: PlansV2Service) {
 
     // GET /api/v2/plans/{id}
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: String): ResponseEntity<ApiResponse<PlanResponse>> {
+    fun findById(@PathVariable id: String): ResponseEntity<ApiResponse<PlanResponseV2>> {
         val uuid = try {
             UUID.fromString(id)
         } catch (e: IllegalArgumentException) {
@@ -82,7 +82,7 @@ class PlansV2Controller(private val plansV2Service: PlansV2Service) {
 
     // GET /api/v2/plans/tenant/{tenantId}
     @GetMapping("/tenant/{tenantId}")
-    fun findByTenantId(@PathVariable tenantId: String): ResponseEntity<ApiResponse<PlanResponse>> {
+    fun findByTenantId(@PathVariable tenantId: String): ResponseEntity<ApiResponse<PlanResponseV2>> {
         val uuid = try {
             UUID.fromString(tenantId)
         } catch (e: IllegalArgumentException) {
@@ -121,7 +121,7 @@ class PlansV2Controller(private val plansV2Service: PlansV2Service) {
     @PostMapping
     fun create(
         @RequestBody(required = false) request: CreatePlanRequest?
-    ): ResponseEntity<ApiResponse<PlanResponse>> {
+    ): ResponseEntity<ApiResponse<PlanResponseV2>> {
         if (request == null) {
             return ResponseEntity.status(400).body(
                 ApiResponse(
@@ -176,7 +176,7 @@ class PlansV2Controller(private val plansV2Service: PlansV2Service) {
     fun update(
         @PathVariable id: String,
         @RequestBody(required = false) request: UpdatePlanRequest?
-    ): ResponseEntity<ApiResponse<PlanResponse>> {
+    ): ResponseEntity<ApiResponse<PlanResponseV2>> {
         val uuid = try {
             UUID.fromString(id)
         } catch (e: IllegalArgumentException) {
@@ -295,7 +295,7 @@ class PlansV2Controller(private val plansV2Service: PlansV2Service) {
     fun addModule(
         @PathVariable id: String,
         @RequestBody(required = false) request: AddModuleToPlanRequest?
-    ): ResponseEntity<ApiResponse<PlanResponse>> {
+    ): ResponseEntity<ApiResponse<PlanResponseV2>> {
         val uuid = try {
             UUID.fromString(id)
         } catch (e: IllegalArgumentException) {
@@ -363,7 +363,7 @@ class PlansV2Controller(private val plansV2Service: PlansV2Service) {
     fun removeModule(
         @PathVariable id: String,
         @PathVariable moduleId: String
-    ): ResponseEntity<ApiResponse<PlanResponse>> {
+    ): ResponseEntity<ApiResponse<PlanResponseV2>> {
         val planUuid = try {
             UUID.fromString(id)
         } catch (e: IllegalArgumentException) {

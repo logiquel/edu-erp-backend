@@ -3,9 +3,9 @@ package com.logiquel.schoolerp.service.v2
 
 import com.logiquel.schoolerp.dto.common.ApiError
 import com.logiquel.schoolerp.dto.common.ApiResponse
-import com.logiquel.schoolerp.dto.v2.CreateModuleRequest
-import com.logiquel.schoolerp.dto.v2.ModuleResponse
-import com.logiquel.schoolerp.dto.v2.UpdateModuleRequest
+import com.logiquel.schoolerp.dto.v2.CreateModuleRequestV2
+import com.logiquel.schoolerp.dto.v2.ModuleResponseV2
+import com.logiquel.schoolerp.dto.v2.UpdateModuleRequestV2
 import com.logiquel.schoolerp.entities.v2.ModuleEntityV2
 import com.logiquel.schoolerp.repo.v2.ModuleRepositoryV2
 import com.logiquel.schoolerp.repo.RoleRepository
@@ -25,7 +25,7 @@ class ModulesV2Service(
     // GET ALL
     // ─────────────────────────────────────
     @Cacheable(cacheNames = ["modules"])
-    fun findAll(): List<ModuleResponse> {
+    fun findAll(): List<ModuleResponseV2> {
        return  moduleRepositoryV2.findAllWithRoles().map { it.toResponse() }
 
     }
@@ -33,7 +33,7 @@ class ModulesV2Service(
     // ─────────────────────────────────────
     // GET BY ID
     // ─────────────────────────────────────
-    fun findById(id: UUID): ApiResponse<ModuleResponse> {
+    fun findById(id: UUID): ApiResponse<ModuleResponseV2> {
         val module = moduleRepositoryV2.findById(id).orElse(null)
             ?: return ApiResponse(
                 success = false,
@@ -56,7 +56,7 @@ class ModulesV2Service(
     // ─────────────────────────────────────
     // CREATE
     // ─────────────────────────────────────
-    fun create(request: CreateModuleRequest): ApiResponse<ModuleResponse> {
+    fun create(request: CreateModuleRequestV2): ApiResponse<ModuleResponseV2> {
         val role = roleRepository.findById(request.roleId).orElse(null)
             ?: return ApiResponse(
                 success = false,
@@ -93,7 +93,7 @@ class ModulesV2Service(
     // UPDATE
     // ─────────────────────────────────────
     @CacheEvict(cacheNames = ["modules"],allEntries = true)
-    fun update(id: UUID, request: UpdateModuleRequest): ApiResponse<ModuleResponse> {
+    fun update(id: UUID, request: UpdateModuleRequestV2): ApiResponse<ModuleResponseV2> {
         val module = moduleRepositoryV2.findById(id).orElse(null)
             ?: return ApiResponse(
                 success = false,
@@ -165,7 +165,7 @@ class ModulesV2Service(
     // ─────────────────────────────────────
     // Mapper — Entity to Response
     // ─────────────────────────────────────
-    private fun ModuleEntityV2.toResponse() = ModuleResponse(
+    private fun ModuleEntityV2.toResponse() = ModuleResponseV2(
         id              = id!!,
         key             = key,
         name            = name,

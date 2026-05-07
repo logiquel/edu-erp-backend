@@ -2,9 +2,9 @@ package com.logiquel.schoolerp.controller.v2
 
 import com.logiquel.schoolerp.dto.common.ApiError
 import com.logiquel.schoolerp.dto.common.ApiResponse
-import com.logiquel.schoolerp.dto.v2.CreateModuleRequest
-import com.logiquel.schoolerp.dto.v2.ModuleResponse
-import com.logiquel.schoolerp.dto.v2.UpdateModuleRequest
+import com.logiquel.schoolerp.dto.v2.CreateModuleRequestV2
+import com.logiquel.schoolerp.dto.v2.ModuleResponseV2
+import com.logiquel.schoolerp.dto.v2.UpdateModuleRequestV2
 import com.logiquel.schoolerp.service.v2.ModulesV2Service
 
 import org.springframework.http.ResponseEntity
@@ -25,7 +25,7 @@ class ModulesV2Controller(private val modulesV2Service: ModulesV2Service) {
     // GET /api/v2/modules
 
     @GetMapping
-    fun findAll(): ResponseEntity<ApiResponse<List<ModuleResponse>>> {
+    fun findAll(): ResponseEntity<ApiResponse<List<ModuleResponseV2>>> {
         return try {
             val modules = modulesV2Service.findAll()
             ResponseEntity.ok(
@@ -37,7 +37,7 @@ class ModulesV2Controller(private val modulesV2Service: ModulesV2Service) {
                 )
             )
         } catch (e: Exception) {
-            val error = ApiResponse<List<ModuleResponse>>(
+            val error = ApiResponse<List<ModuleResponseV2>>(
                 success = false,
                 status = 500,
                 message = "Failed to fetch modules",
@@ -52,7 +52,7 @@ class ModulesV2Controller(private val modulesV2Service: ModulesV2Service) {
 
     // GET /api/v2/modules/{id}
     @GetMapping("/{id}")
-    fun findById(@PathVariable id: String): ResponseEntity<ApiResponse<ModuleResponse>> {
+    fun findById(@PathVariable id: String): ResponseEntity<ApiResponse<ModuleResponseV2>> {
         // edge case — invalid UUID format
         val uuid = try {
             UUID.fromString(id)
@@ -90,7 +90,7 @@ class ModulesV2Controller(private val modulesV2Service: ModulesV2Service) {
 
     // POST /api/v2/modules
     @PostMapping
-    fun create(@RequestBody(required = false) request: CreateModuleRequest?): ResponseEntity<ApiResponse<ModuleResponse>> {
+    fun create(@RequestBody(required = false) request: CreateModuleRequestV2?): ResponseEntity<ApiResponse<ModuleResponseV2>> {
         // edge case — empty request body
         if (request == null) {
             return ResponseEntity.status(400).body(
@@ -147,8 +147,8 @@ class ModulesV2Controller(private val modulesV2Service: ModulesV2Service) {
     @PutMapping("/{id}")
     fun update(
         @PathVariable id: String,
-        @RequestBody(required = false) request: UpdateModuleRequest?
-    ): ResponseEntity<ApiResponse<ModuleResponse>> {
+        @RequestBody(required = false) request: UpdateModuleRequestV2?
+    ): ResponseEntity<ApiResponse<ModuleResponseV2>> {
         // edge case — invalid UUID format
         val uuid = try {
             UUID.fromString(id)

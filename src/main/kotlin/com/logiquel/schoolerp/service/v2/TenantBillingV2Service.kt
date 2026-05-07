@@ -2,7 +2,7 @@ package com.logiquel.schoolerp.service.v2
 
 import com.logiquel.schoolerp.dto.common.ApiError
 import com.logiquel.schoolerp.dto.common.ApiResponse
-import com.logiquel.schoolerp.dto.v2.TenantBillingResponse
+import com.logiquel.schoolerp.dto.v2.TenantBillingResponseV2
 import com.logiquel.schoolerp.entities.v2.BillingCycle
 import com.logiquel.schoolerp.entities.v2.TenantBillingEntityV2
 import com.logiquel.schoolerp.repo.v2.PlanRepositoryV2
@@ -35,7 +35,7 @@ class TenantBillingV2Service(
     // ─────────────────────────────────────
     // GET ALL
     // ─────────────────────────────────────
-    fun findAll(): ApiResponse<List<TenantBillingResponse>> {
+    fun findAll(): ApiResponse<List<TenantBillingResponseV2>> {
         val billings = tenantBillingRepositoryV2.findAll().map { it.toResponse() }
         return ApiResponse(
             success = true,
@@ -48,7 +48,7 @@ class TenantBillingV2Service(
     // ─────────────────────────────────────
     // GET BY ID
     // ─────────────────────────────────────
-    fun findById(id: UUID): ApiResponse<TenantBillingResponse> {
+    fun findById(id: UUID): ApiResponse<TenantBillingResponseV2> {
         val billing = tenantBillingRepositoryV2.findById(id).orElse(null)
             ?: return ApiResponse(
                 success = false,
@@ -70,7 +70,7 @@ class TenantBillingV2Service(
     // ─────────────────────────────────────
     // GET BY TENANT ID
     // ─────────────────────────────────────
-    fun findByTenantId(tenantId: UUID): ApiResponse<TenantBillingResponse> {
+    fun findByTenantId(tenantId: UUID): ApiResponse<TenantBillingResponseV2> {
         val billing = tenantBillingRepositoryV2.findByTenantId(tenantId).orElse(null)
             ?: return ApiResponse(
                 success = false,
@@ -93,7 +93,7 @@ class TenantBillingV2Service(
     // CREATE
     // ─────────────────────────────────────
     @Transactional
-    fun create(request: CreateTenantBillingRequest): ApiResponse<TenantBillingResponse> {
+    fun create(request: CreateTenantBillingRequest): ApiResponse<TenantBillingResponseV2> {
         val tenant = tenantRepositoryV2.findById(request.tenantId).orElse(null)
             ?: return ApiResponse(
                 success = false,
@@ -163,7 +163,7 @@ class TenantBillingV2Service(
     // UPDATE
     // ─────────────────────────────────────
     @Transactional
-    fun update(id: UUID, request: UpdateTenantBillingRequest): ApiResponse<TenantBillingResponse> {
+    fun update(id: UUID, request: UpdateTenantBillingRequest): ApiResponse<TenantBillingResponseV2> {
         val billing = tenantBillingRepositoryV2.findById(id).orElse(null)
             ?: return ApiResponse(
                 success = false,
@@ -229,7 +229,7 @@ class TenantBillingV2Service(
     // ─────────────────────────────────────
     // Mapper
     // ─────────────────────────────────────
-    private fun TenantBillingEntityV2.toResponse() = TenantBillingResponse(
+    private fun TenantBillingEntityV2.toResponse() = TenantBillingResponseV2(
         id = id!!,
         tenantId = tenant.id!!,
         tenantName = tenant.name,
